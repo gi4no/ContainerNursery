@@ -18,6 +18,7 @@ type ProxyHostConfig = {
   proxyUseCustomMethod: string
   timeoutSeconds: number
   stopOnTimeoutIfCpuUsageBelow?: number
+  disableDefaultLoadingPage?:boolean
 }
 type ApplicationConfig = {
   proxyListeningPort: number,
@@ -139,6 +140,10 @@ export default class ConfigManager {
 
         if (proxyHostConfig.stopOnTimeoutIfCpuUsageBelow) {
           proxyHost.stopOnTimeoutIfCpuUsageBelow = proxyHostConfig.stopOnTimeoutIfCpuUsageBelow as number;
+        }
+
+        if (proxyHostConfig.disableDefaultLoadingPage) {
+          proxyHost.disableDefaultLoadingPage = proxyHostConfig.disableDefaultLoadingPage;
         }
 
         if (proxyHostConfig.domain instanceof Array) {

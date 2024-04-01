@@ -16,6 +16,7 @@ export default class ProxyHost {
   public proxyUseCustomMethod: string | undefined;
   private timeoutSeconds: number;
   public stopOnTimeoutIfCpuUsageBelow = Infinity;
+  public disableDefaultLoadingPage = false
 
   private activeSockets: Set<internal.Duplex> = new Set();
   private containerEventEmitter: EventEmitter | null = null;
@@ -135,6 +136,18 @@ export default class ProxyHost {
 
     this.checkContainerReady();
     this.startingHost = false;
+  }
+
+  public async isContainerRunning():Promise<boolean> {
+    let interval:NodeJS.Timer;
+    return new Promise((resolve) => {
+      interval = setInterval(async () => {
+        if (this.containerRunning) {
+          resolve(true);
+          clearInterval(interval);
+        }
+      }, 250);
+    });
   }
 
   private checkContainerReady() {

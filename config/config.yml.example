@@ -7,6 +7,7 @@ proxyHosts:
     proxyPort: 5800
     timeoutSeconds: 15
     stopOnTimeoutIfCpuUsageBelow: 50
+    disableDefaultLoadingPage: false
   - domain:
       - wordpress.yourdomain.io
       - wordpress.otherdomain.io

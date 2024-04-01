@@ -120,8 +120,18 @@ placeholderServer.use((_, res, next) => {
   res.setHeader('x-powered-by', 'ContainerNursery');
   next();
 });
-placeholderServer.get('*', (req, res) => {
-  res.render('placeholder', { containerName: req.headers['x-container-nursery-container-name'] });
+placeholderServer.all('*', async (req, res) => {
+  const proxyHost = proxyHosts.get(req.headers.host as string);
+  if (proxyHost?.disableDefaultLoadingPage) {
+    await proxyHost?.isContainerRunning();
+    proxyHost?.newConnection();
+    proxy.web(req, res, {
+      target: proxyHost?.getTarget(),
+      headers: proxyHost?.getHeaders()
+    });
+  } else {
+    res.render('placeholder', { containerName: req.headers['x-container-nursery-container-name'] });
+  }
 });
 placeholderServer.listen(placeholderServerListeningPort, placeholderServerListeningHost);
 logger.info({ port: placeholderServerListeningPort, host: placeholderServerListeningHost }, 'Proxy placeholder server listening');
