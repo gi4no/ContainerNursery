@@ -1,5 +1,4 @@
 node_modules/
 .vscode/
-src/
 config/config.yml
 .env
