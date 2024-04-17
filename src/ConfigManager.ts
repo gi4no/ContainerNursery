@@ -154,6 +154,10 @@ export default class ConfigManager {
           proxyHost.disableDefaultLoadingPage = this.disableDefaultLoadingPage;
         }
 
+        if (proxyHostConfig.disableDefaultLoadingPage) {
+          proxyHost.disableDefaultLoadingPage = proxyHostConfig.disableDefaultLoadingPage;
+        }
+
         if (proxyHostConfig.customHttpStatusReadyChecking) {
           proxyHost.customHttpStatusReadyChecking = proxyHostConfig.customHttpStatusReadyChecking;
         }
