@@ -18,11 +18,13 @@ type ProxyHostConfig = {
   proxyUseCustomMethod: string
   timeoutSeconds: number
   stopOnTimeoutIfCpuUsageBelow?: number
-  disableDefaultLoadingPage?:boolean
-  customHttpStatusReadyChecking?:number
+  disableDefaultLoadingPage?: boolean
+  enableDefaultLoadingPage?: boolean
+  customHttpStatusReadyChecking?: number
 }
 type ApplicationConfig = {
   proxyListeningPort: number,
+  disableDefaultLoadingPage: boolean,
   proxyHosts: ProxyHostConfig[]
 }
 
@@ -30,11 +32,13 @@ export default class ConfigManager {
   private configFile = 'config/config.yml';
   private proxyHosts: Map<string, ProxyHost>;
   private proxyListeningPort: number | null;
+  public disableDefaultLoadingPage: boolean | undefined;
   private eventEmitter: EventEmitter;
 
   constructor(proxyHosts: Map<string, ProxyHost>) {
     this.proxyHosts = proxyHosts;
     this.proxyListeningPort = null;
+    this.disableDefaultLoadingPage = false;
     this.eventEmitter = new EventEmitter();
     this.createIfNotExist();
     this.parseConfig();
@@ -98,6 +102,9 @@ export default class ConfigManager {
     if (!config || !config.proxyHosts) {
       logger.error({ invalidProperty: 'proxyHosts' }, 'Config is invalid, missing property');
     } else {
+      if (config.disableDefaultLoadingPage) {
+        this.disableDefaultLoadingPage = config.disableDefaultLoadingPage;
+      }
       this.loadProxyHosts(config.proxyHosts);
       if (config.proxyListeningPort) {
         const prevPort = this.proxyListeningPort;
@@ -143,8 +150,8 @@ export default class ConfigManager {
           proxyHost.stopOnTimeoutIfCpuUsageBelow = proxyHostConfig.stopOnTimeoutIfCpuUsageBelow as number;
         }
 
-        if (proxyHostConfig.disableDefaultLoadingPage) {
-          proxyHost.disableDefaultLoadingPage = proxyHostConfig.disableDefaultLoadingPage;
+        if (this.disableDefaultLoadingPage && !proxyHostConfig.enableDefaultLoadingPage) {
+          proxyHost.disableDefaultLoadingPage = this.disableDefaultLoadingPage;
         }
 
         if (proxyHostConfig.customHttpStatusReadyChecking) {

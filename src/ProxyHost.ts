@@ -18,6 +18,7 @@ export default class ProxyHost {
   private timeoutSeconds: number;
   public stopOnTimeoutIfCpuUsageBelow = Infinity;
   public disableDefaultLoadingPage = false
+  public enableDefaultLoadingPage = false
 
   private activeSockets: Set<internal.Duplex> = new Set();
   private containerEventEmitter: EventEmitter | null = null;
