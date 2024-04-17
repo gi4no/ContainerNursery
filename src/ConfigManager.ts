@@ -19,6 +19,7 @@ type ProxyHostConfig = {
   timeoutSeconds: number
   stopOnTimeoutIfCpuUsageBelow?: number
   disableDefaultLoadingPage?:boolean
+  customHttpStatusReadyChecking?:number
 }
 type ApplicationConfig = {
   proxyListeningPort: number,
@@ -144,6 +145,10 @@ export default class ConfigManager {
 
         if (proxyHostConfig.disableDefaultLoadingPage) {
           proxyHost.disableDefaultLoadingPage = proxyHostConfig.disableDefaultLoadingPage;
+        }
+
+        if (proxyHostConfig.customHttpStatusReadyChecking) {
+          proxyHost.customHttpStatusReadyChecking = proxyHostConfig.customHttpStatusReadyChecking;
         }
 
         if (proxyHostConfig.domain instanceof Array) {
