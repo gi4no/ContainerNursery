@@ -114,3 +114,6 @@ config/config.yml
 
 # IntelliJ configuration
 .idea
+
+# macos
+.DS_Store
