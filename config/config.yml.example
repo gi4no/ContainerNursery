@@ -1,4 +1,5 @@
 proxyListeningPort: 80
+disableDefaultLoadingPage: true
 proxyHosts:
   - domain: handbrake.yourdomain.io
     containerName: handbrake
@@ -7,7 +8,7 @@ proxyHosts:
     proxyPort: 5800
     timeoutSeconds: 15
     stopOnTimeoutIfCpuUsageBelow: 50
-    disableDefaultLoadingPage: false
+    enableDefaultLoadingPage: true
   - domain:
       - wordpress.yourdomain.io
       - wordpress.otherdomain.io

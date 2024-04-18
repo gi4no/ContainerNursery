@@ -13,10 +13,12 @@ export default class ProxyHost {
   private proxyHost: string;
   private proxyPort: number;
   public proxyUseHttps = false;
+  public customHttpStatusReadyChecking: number | undefined
   public proxyUseCustomMethod: string | undefined;
   private timeoutSeconds: number;
   public stopOnTimeoutIfCpuUsageBelow = Infinity;
   public disableDefaultLoadingPage = false
+  public enableDefaultLoadingPage = false
 
   private activeSockets: Set<internal.Duplex> = new Set();
   private containerEventEmitter: EventEmitter | null = null;
@@ -168,7 +170,10 @@ export default class ProxyHost {
           headers: res.headers
         }, 'Checked if target is ready');
 
-        if (res.status === 200 || (res.status >= 300 && res.status <= 399)) {
+        if (
+          res.status === 200 || (res.status >= 300 && res.status <= 399)
+          || (this.customHttpStatusReadyChecking && res.status === this.customHttpStatusReadyChecking)
+        ) {
           clearInterval(checkInterval);
           this.containerReadyChecking = false;
           this.containerRunning = true;
