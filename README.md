@@ -47,6 +47,7 @@ The following top-level properties can be configured:
 Property | Meaning
 ---------|--------|
 `proxyListeningPort` | The port ContainerNursery should listen on for new http connections. Defaults to `80`.
+`disableDefaultLoadingPage` | Boolean for disable the default loading page. By disabling the default loading page the request waits for the container and responds when the container is ready. Defaults to `false`.
 
 The virtual hosts the proxy should handle can be configured by adding an object to the `proxyHosts` key.
 
@@ -68,6 +69,8 @@ The following properties are optional:
 | `proxyUseHttps`                | Boolean indicating if the proxy should use HTTPS to connect to the container. Defaults to `false`. This should only be used if the container only accepts HTTPS requests. It provides no additional security.                                                                                                                                                                                            |
 | `stopOnTimeoutIfCpuUsageBelow` | If set, prevents the container from stopping when reaching the configured timeout if the averaged CPU usage (percentage between 0 and 100*core count) of the **main** container (first in the list of container names) is above this value. This is great for containers that should remain running while their doing intensive work even when nobody is doing any http requests, for example handbrake. |
 | `proxyUseCustomMethod` | Can be set to a HTTP method (`HEAD`,`GET`, ...) which should be used for the ready check. Some services only respond to certain HTTP methods correctly. |
+| `enableDefaultLoadingPage` | Boolean for enable the default loading page when `disableDefaultLoadingPage` is set to `true`. |
+| `customHttpStatusReadyChecking` | Custom Http status number use to check if the container is ready and running. |
 
 ### Example Configuration
 ```yaml
